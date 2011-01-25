@@ -1,0 +1,8 @@
+Scala Patience Diff
+===================
+
+An implementation of the Patience Diff algorithm, as found in several modern
+VCS programs.
+
+See http://www.owenstephens.co.uk/programming/scala-patience-diff for
+usage motivation and example.
