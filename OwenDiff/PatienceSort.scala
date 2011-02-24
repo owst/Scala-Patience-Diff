@@ -2,28 +2,28 @@ package OwenDiff
 import scala.collection.immutable.HashMap
 
 object PatienceSort {
-	// Find the longest increasing subsequence
+    // Find the longest increasing subsequence
     def LIS[A <% Ordered[A]](source : Traversable[A]) : Traversable[A] = {
         // Take a list of pile tops, a hashmap of backpointers
-    	// and an element. Add the element to the piles and backpointers.
-    	def createBackPointers(pileAndBackPointers: (List[A],
+        // and an element. Add the element to the piles and backpointers.
+        def createBackPointers(pileAndBackPointers: (List[A],
           HashMap[A, Option[A]]), elem : A) = {
-        	val (pileTops, backPointers) = pileAndBackPointers
+            val (pileTops, backPointers) = pileAndBackPointers
 
-        	// Find the index at which the elem would be added
-        	// into pileTops.
-        	val index = bisect(pileTops, elem)
+            // Find the index at which the elem would be added
+            // into pileTops.
+            val index = bisect(pileTops, elem)
 
-        	// Add the element at that index
+            // Add the element at that index
             val newPileTops = if (index == pileTops.length) {
                 pileTops :+ elem
             } else {
                 pileTops.updated(index, elem)
             }
 
-        	// If this isn't the first element, its backpointer
-        	// is the elem at the prior index.
-        	val newBPTuple =
+            // If this isn't the first element, its backpointer
+            // is the elem at the prior index.
+            val newBPTuple =
               ((elem, if (index > 0) Some(pileTops(index - 1)) else None))
             val newBackPointers = backPointers + newBPTuple
 
@@ -39,7 +39,7 @@ object PatienceSort {
         def followPointers(current : Option[A], acc : List[A]) : List[A] = {
             current match {
                 case Some(v) => followPointers(backPointers(v), v +: acc)
-                case _ 		 => acc
+                case _          => acc
             }
         }
 
@@ -56,21 +56,21 @@ object PatienceSort {
 
         val high = hi match {
             case Some(v) => v
-            case _ 		 => elems.length
+            case _          => elems.length
         }
 
         if (lo >= high) {
-        	return lo
+            return lo
         } else {
-        	val mid = (lo + high) / 2
+            val mid = (lo + high) / 2
 
-        	val (newLow, newHigh) = if (elems(mid) < elem){
-        		(mid + 1, high)
-        	} else {
-        		(lo, mid)
-        	}
+            val (newLow, newHigh) = if (elems(mid) < elem){
+                (mid + 1, high)
+            } else {
+                (lo, mid)
+            }
 
-        	return bisect(elems, elem, newLow, Some(newHigh))
+            return bisect(elems, elem, newLow, Some(newHigh))
         }
     }
 }

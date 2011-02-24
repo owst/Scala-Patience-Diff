@@ -2,19 +2,19 @@ package OwenDiff
 import scala.collection.immutable.HashMap
 
 object Diff {
-	type IndexPair = (Int, Int)
+    type IndexPair = (Int, Int)
 
     // Find the LCS of common, unique lines.
     def uniqueLCS(lines1 : Seq[String], lines2 : Seq[String])
       : Traversable[IndexPair] = {
-		type LineToIndex = HashMap[String,Int]
-		type LineAndIndex = (String, Int)
+        type LineToIndex = HashMap[String,Int]
+        type LineAndIndex = (String, Int)
 
         // Insert into, or mark as duplicate, the line in the map.
         def updateLineMap(map : LineToIndex, lineAndIndex : LineAndIndex) = {
-    		val (line, index) = lineAndIndex
-    		map + ((line, if (map.contains(line)) -1 else index))
-    	}
+            val (line, index) = lineAndIndex
+            map + ((line, if (map.contains(line)) -1 else index))
+        }
 
         val lines1Indices =
          (new LineToIndex() /: lines1.view.zipWithIndex)(updateLineMap)
@@ -28,13 +28,13 @@ object Diff {
           (LineToIndex,HashMap[Int,Int], LineToIndex)
 
         def updateUniqueMaps(state : MappingState, lineAndIndex : LineAndIndex) = {
-        	val (uniques1, line2ToLine1, uniqueIndices2) = state
-        	val (line, index) = lineAndIndex
+            val (uniques1, line2ToLine1, uniqueIndices2) = state
+            val (line, index) = lineAndIndex
 
             // Only pay attention to common lines.
             if (uniques1.contains(line)) {
                 val newTuple = if (uniqueIndices2.contains(line)) {
-                	(uniques1 - line,// Ensure we don't match this line again
+                    (uniques1 - line,// Ensure we don't match this line again
                     line2ToLine1 - uniqueIndices2(line),// Not unique, so unset.
                     uniqueIndices2)
                 } else {
@@ -45,7 +45,7 @@ object Diff {
 
                 newTuple
             } else {
-            	state
+                state
             }
         }
 
