@@ -117,13 +117,12 @@ object Diff {
             val (lastPos1, lastPos2) = lastPosAndMatches._1
 
             // Check if we're in a sequence of matching lines, if not, recurse.
-            val localResults = if (lastPos1 + 1 != offsetPos1 ||
-              lastPos2 + 1 != offsetPos2) {
-                recursiveMatch(lines1, lines2, (lastPos1 + 1, offsetPos1),
-                  (lastPos2 + 1, offsetPos2))
-            } else {
-                List()
-            }
+	    val localResults = if (
+	      (lastPos1 + 1 != offsetPos1 || lastPos2 + 1 != offsetPos2) 
+	      && (offsetPos1!=0 && offsetPos2!=0))
+		recursiveMatch(lines1, lines2, (lastPos1 + 1, offsetPos1),(lastPos2 + 1, offsetPos2))
+              else
+		List()
 
             ((offsetPos1, offsetPos2), lastPosAndMatches._2 ++
               localResults :+ (offsetPos1, offsetPos2))
