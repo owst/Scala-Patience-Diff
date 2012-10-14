@@ -116,13 +116,18 @@ object Diff {
             val offsetPos2 = pair._2 + bounds2._1
             val (lastPos1, lastPos2) = lastPosAndMatches._1
 
-            // Check if we're in a sequence of matching lines, if not, recurse.
-	    val localResults = if (
-	      (lastPos1 + 1 != offsetPos1 || lastPos2 + 1 != offsetPos2) 
-	      && (offsetPos1!=0 && offsetPos2!=0))
-		recursiveMatch(lines1, lines2, (lastPos1 + 1, offsetPos1),(lastPos2 + 1, offsetPos2))
-              else
-		List()
+            // Check if we're in a sequence of matching lines, or if the match
+            // occurs at the start of one of the sequences. If not, recurse
+            // between the matches (which we can't do if we matched at the
+            // start of one of the files).
+            val localResults =
+                if ((lastPos1 + 1 != offsetPos1 || lastPos2 + 1 != offsetPos2)
+                    && !(offsetPos1 == 0 || offsetPos2 == 0)) {
+                  recursiveMatch(lines1, lines2, (lastPos1 + 1, offsetPos1),
+                    (lastPos2 + 1, offsetPos2))
+                } else {
+                  List()
+                }
 
             ((offsetPos1, offsetPos2), lastPosAndMatches._2 ++
               localResults :+ (offsetPos1, offsetPos2))
