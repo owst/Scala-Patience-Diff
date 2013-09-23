@@ -1,12 +1,9 @@
 resolvers := Seq(
   "NGS Nexus" at "http://ngs.hr/nexus/content/groups/public/"
-, Resolver.url("NGS Nexus (Ivy)",
-    url("http://ngs.hr/nexus/content/groups/public/"))(Resolver.ivyStylePatterns)
+, Resolver.url("NGS Nexus (Ivy)", url("http://ngs.hr/nexus/content/groups/public/"))(Resolver.ivyStylePatterns)
 )
 
-externalResolvers <<= resolvers map { r =>
-  Resolver.withDefaultResolvers(r, mavenCentral = false)
-}
+externalResolvers := Resolver.withDefaultResolvers(resolvers.value, mavenCentral = false)
 
 // =======================================================================================
 
@@ -18,4 +15,4 @@ externalResolvers <<= resolvers map { r =>
 // | See also: Scala IDE downloads (http://download.scala-ide.org/)                      |
 // +-------------------------------------------------------------------------------------+
 
-addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.2.0-RC2")
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.3.0")

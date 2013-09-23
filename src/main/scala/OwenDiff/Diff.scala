@@ -26,6 +26,7 @@
  */
 
 package OwenDiff
+
 import scala.collection.immutable.HashMap
 
 object Diff {
@@ -130,7 +131,7 @@ object Diff {
                 }
 
             ((offsetPos1, offsetPos2), lastPosAndMatches._2 ++
-              localResults :+ (offsetPos1, offsetPos2))
+              localResults :+ ((offsetPos1, offsetPos2)))
         }
 
         // Fold up the list of matched line equalLineIndices, recursing between
@@ -154,7 +155,7 @@ object Diff {
                     return (pos1, pos2, acc)
                 }
 
-                return findStartMatches(pos1 + 1, pos2 + 1, acc :+ (pos1, pos2))
+                return findStartMatches(pos1 + 1, pos2 + 1, acc :+ ((pos1, pos2)))
             }
 
             val (pos1, pos2, startList) =
@@ -173,7 +174,7 @@ object Diff {
                     return (pos1, pos2, acc)
                 } else {
                     return findEndMatches(pos1 - 1, pos2 - 1,
-                      acc :+ (pos1, pos2))
+                      acc :+ ((pos1, pos2)))
                 }
             }
 

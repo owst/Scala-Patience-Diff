@@ -26,6 +26,7 @@
  */
 
 package OwenDiff
+
 import scala.collection.immutable.HashMap
 
 object PatienceSort {
