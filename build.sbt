@@ -50,6 +50,7 @@ scalacOptions := {
     "-unchecked"
   , "-deprecation"
   , "-encoding", "UTF-8"
+  , "-optimise"
   , "-Xcheckinit"
   , "-Yclosure-elim"
   , "-Ydead-code"
@@ -57,8 +58,7 @@ scalacOptions := {
   )
 // --
   val scala2_9 = Seq(
-    "-optimise"
-  , "-Xmax-classfile-name", "72"
+    "-Xmax-classfile-name", "72"
   )
 // --
   val scala2_9_1 = Seq(
@@ -84,6 +84,22 @@ scalacOptions := {
 }
 
 unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil
+
+unmanagedSourceDirectories in Test := (scalaSource in Test).value :: Nil
+
+
+// ### TEST DEPENDENCIES ###
+
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" %
+    (scalaVersion.value match {
+      case x if x startsWith "2.8." => "1.8"
+      case x if x startsWith "2.9." => "2.0.M5b"
+      case x if x startsWith "2.10." => "2.0.M8"
+      case x if x startsWith "2.11." => "2.0.M7"
+    } ) % "test"
+, "junit" % "junit" % "4.11" % "test"
+)
 
 
 // ### ECLIPSE SETTINGS ###
